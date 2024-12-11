@@ -13,7 +13,7 @@ const produtc = {
 if(!localStorage.getItem('currUser')){
   location.href='../login/index.html';
 }
-const currentUser = localStorage.getItem('currUser');
+// const currentUser = localStorage.getItem('currUser');
 
 const itemsContainer = document.querySelector('.items');
 const search = document.getElementById('search');
@@ -24,8 +24,8 @@ const jewelleryBtn = document.getElementById('jewellery');
 const electronicsBtn = document.getElementById('electronics');
 const range = document.getElementById('range');
 
+let category = "all";
 var itemArr=[];
-console.log(JSON.parse(localStorage.getItem('cartArr')));
 
 if(localStorage.getItem('cartArr')){
   var cartArr=JSON.parse(localStorage.getItem('cartArr'));
@@ -41,14 +41,13 @@ fetch("https://fakestoreapi.com/products")
   itemArr=data;
   localStorage.setItem('itemArr',JSON.stringify(itemArr));
   showItems(itemArr);
-  console.log(itemArr);
 });
 
 function showItems(Arr){
+  // console.log(Arr)
+  // ga_view_item_list(id=1,category="all",Arr);
   itemsContainer.innerHTML='';
   Arr.forEach(ele => {
-
-  
    let div = document.createElement("div");
    div.classList.add("item");
    let img = document.createElement('img');
@@ -78,17 +77,12 @@ function showItems(Arr){
    div.append(infoDiv);
    let btn = document.createElement("button");
    btn.setAttribute("id","addBtn");
-   btn.setAttribute("class","add_to_card");
    btn.addEventListener('click',()=>{
-    addToCart(ele.id)
-    
+    viewProduct(ele.id)
   });
-   btn.textContent="Add to Cart"
+   btn.textContent="View Product"
    div.append(btn);
    itemsContainer.append(div);
-
-
-  
 
   });
   
@@ -107,6 +101,7 @@ search.addEventListener('input',()=>{
     `
     return;
   }
+  // ga_searched(myArr, category="all")
   showItems(myArr);
 })
 
@@ -127,6 +122,7 @@ allBtn.addEventListener('click',()=>{
 
 
 menBtn.addEventListener('click',()=>{
+ category="men's clothing";
   myArr = itemArr.filter(ele=>{
     if(ele.category=="men's clothing"){
       return ele;
@@ -148,6 +144,7 @@ menBtn.addEventListener('click',()=>{
 })
 
 womenBtn.addEventListener('click',()=>{
+  category="women's clothing";
   myArr = itemArr.filter(ele=>{
     if(ele.category=="women's clothing"){
       return ele;
@@ -168,6 +165,7 @@ womenBtn.addEventListener('click',()=>{
 })
 
 jewelleryBtn.addEventListener('click',()=>{
+  category="jewelery";
   myArr = itemArr.filter(ele=>{
     if(ele.category=="jewelery"){
       return ele;
@@ -188,6 +186,7 @@ jewelleryBtn.addEventListener('click',()=>{
 })
 
 electronicsBtn.addEventListener('click',()=>{
+  category="electronics";
   myArr = itemArr.filter(ele=>{
     if(ele.category=="electronics"){
       return ele;
@@ -278,7 +277,21 @@ function addToCart(id) {
   cartArr.push(item);
   localStorage.setItem(cartKey,JSON.stringify(cartArr));
   console.log(JSON.parse(localStorage.getItem(cartKey)));  
-  ga_add_to_cart(item.price,item.id,item.title,item.category);
+  // ga_add_to_cart(item.price,item.id,item.title,item.category);
+}
+
+
+
+function viewProduct(id) {
+  console.log("clicked");
+  
+  const item = itemArr.find((ele) => ele.id == id);
+  if (item) {
+    localStorage.setItem('selectedProduct', JSON.stringify(item));
+    window.location.href = "/product-page/index.html";
+  } else {
+    console.error('Product not found');
+  }
 }
 
 

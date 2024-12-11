@@ -9,7 +9,27 @@ const totalPrice = document.getElementById('total-price');
 var cartItem=[];
 const cartKey = `cart_${currentUser.email}`;
 
-
+window.addEventListener('load',function(){
+  function ga_checkout_process(products) {
+    console.log("checkout");
+    gtag("event", "begin_checkout", {
+      currency: "INR",
+      value: products.reduce((acc, product) => acc + product.price, 0),
+      coupon: "no-coupon",
+      items: [
+        products.map((product) => ({
+          item_id: product.id,
+          item_name: product.title,
+          item_brand: product.category,
+          item_category: product.category,
+          price: product.price,
+          quantity: 1,
+        })),
+      ],
+    });
+  }
+  ga_checkout_process(cartItem);
+})
 if(localStorage.getItem(cartKey)){
 
     let myArr =JSON.parse(localStorage.getItem(cartKey));
@@ -17,6 +37,7 @@ if(localStorage.getItem(cartKey)){
     cartItem=myArr;
 
     showCartItem(cartItem);
+    
     
 }
 else{
@@ -106,6 +127,7 @@ function totalPriceFunc(){
 // https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/build-integration#code-to-add-pay-button
 
 document.getElementById("rzp-button1").onclick = function (e) {
+    ga_add_payment_info(cartItem)
     var options = {
       key: "rzp_test_PV1oQ0oMtgXOsq", // Enter the Key ID generated from the Dashboard
       amount: totalPriceFunc() * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -136,3 +158,14 @@ document.getElementById("rzp-button1").onclick = function (e) {
 
 
 
+  function getAllLinks(){
+    const link_clicks = document.querySelectorAll('a');
+    link_clicks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(e);
+        
+        ga_page_view(link.href);
+      });
+    });
+  }

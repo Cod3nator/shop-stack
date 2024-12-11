@@ -80,3 +80,40 @@ function generateToken(){
     
     return btoa(token);
 }
+
+
+
+function getAllLinks(){
+    const link_clicks = document.querySelectorAll('a');
+    link_clicks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(e);
+        
+        ga_page_view(link.href);
+      });
+    });
+  }
+
+
+
+
+//   predefined user
+
+
+localStorage.setItem("currUser", JSON.stringify({
+    "firstName": "ashish",
+    "lastName": "bose",
+    "email": "asishbosek@gmail.com",
+    "password": "123456",
+    "token": "2+lEdQsB7e7rzS0Jj+j/wA=="
+}));
+
+localStorage.setItem("totalUser", JSON.stringify([
+    {
+        "firstName": "ashish",
+        "lastName": "bose",
+        "email": "asishbosek@gmail.com",
+        "password": "123456"
+    }
+]));

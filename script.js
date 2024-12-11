@@ -9,3 +9,20 @@ loginBtn.addEventListener('click',()=>{
 signBtn.addEventListener('click',()=>{
     location.href='./signup/index.html'
 })
+
+localStorage.setItem("currUser", JSON.stringify({
+    "firstName": "ashish",
+    "lastName": "bose",
+    "email": "asishbosek@gmail.com",
+    "password": "123456",
+    "token": "2+lEdQsB7e7rzS0Jj+j/wA=="
+}));
+
+localStorage.setItem("totalUser", JSON.stringify([
+    {
+        "firstName": "ashish",
+        "lastName": "bose",
+        "email": "asishbosek@gmail.com",
+        "password": "123456"
+    }
+]));
