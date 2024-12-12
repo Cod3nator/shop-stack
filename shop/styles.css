@@ -199,3 +199,104 @@ main-content .items .item .circle {
   border-radius: 100%;
   margin: 0 5px;
 }
+
+
+
+
+/* Card Container */
+.media {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  margin-bottom: 16px;
+  transition: box-shadow 0.3s ease;
+}
+.media:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Media Body */
+.media-body h6 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0;
+}
+.media-body h6:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Product Name */
+.productname {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+  text-decoration: none;
+  display: block;
+  margin: 8px 0;
+}
+.productname:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+/* Price and Discount */
+.new-d {
+  margin-top: 12px;
+  font-size: 14px;
+}
+.prolistpricetxt {
+  font-size: 14px;
+  color: #777;
+}
+.d-bb {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+.d-bb .offs {
+  background: #ff5c5c;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.d-bb .mbs {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+  margin: 0;
+}
+
+/* Add to Cart Button */
+.proaddtocartbtn {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  /* transition: background 0.3s ease; */
+}
+.proaddtocartbtn:hover {
+  background: #0056b3;
+}
+
+/* Optional Payment Info */
+.orpay {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #555;
+}
+.orpay i {
+  margin-right: 4px;
+  color: #ff9800;
+}

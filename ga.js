@@ -1,3 +1,9 @@
+const ga_id = "G-V9GTEX5QS1";
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
 function ga_add_to_cart(price, id, name, category) {
   // gtag("event", "add_to_cart", {
   //   currency: "INR",
@@ -5,7 +11,6 @@ function ga_add_to_cart(price, id, name, category) {
   //   item_id: id,
   //   item_name: name,
   //   item_category: category,
-
   //   // items: [
   //   //   {
   //   //     item_id: "SKU_12345",
@@ -54,7 +59,7 @@ function ga_view_item_list(id = 1, category, products) {
   // gtag("event", "view_item_list", {
   //   item_list_id: id,
   //   item_list_name: category,
-  //   items: 
+  //   items:
   //     products.map((product) => ({
   //       item_id: product.id,
   //       item_name: product.title,
@@ -88,7 +93,7 @@ function ga_filtered(name, category) {
 
 function ga_checkout_process(products) {
   console.log("checkout");
-console.log(products.reduce((acc, product) => acc + product.price, 0));
+  console.log(products.reduce((acc, product) => acc + product.price, 0));
 
   // gtag("event", "begin_checkout", {
   //   currency: "INR",
@@ -105,7 +110,6 @@ console.log(products.reduce((acc, product) => acc + product.price, 0));
   // });
 }
 
-
 function ga_add_payment_info(products) {
   console.log("add_payment_info");
   // gtag("event", "add_payment_info", {
@@ -115,4 +119,32 @@ function ga_add_payment_info(products) {
   //   payment_type: "Card",
   // });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .querySelector(".proaddtocartbtn")
+    .addEventListener("click", function () {
+      console.log("clicked add to cart");
+      var cart_element = jQuery(this).closest(".productbox");
+      item = {
+        user_properties: {
+          uuid: getCookie("xid"),
+        },
+        uuid: getCookie("xid"),
+        item_brand: $(cart_element).find(".media-body").text().trim(),
+        item_name: $(cart_element).find(".productname").text().trim(),
+        // document.querySelector("[id*=_catname]").text().replace(/[&\/\\#,+()document.querySelector~%.'":*?<>{}]/g,'').trim() ||
+        item_category: "Ecommerce",
+        item_category2: "Shop stack",
+        price: $(cart_element)
+          .find(".mbs")
+          .text()
+          .trim()
+          .replace(/[^\d.]/g, ""),
+        image: $(cart_element).find(".proimage1 img").attr("src"),
+      };
+      nv("event","Add To Cart",item);
+      gtag("event", "add_to_cart", item);
+    });
+});
 

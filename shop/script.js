@@ -75,6 +75,10 @@ function showItems(Arr){
    ratingDiv.textContent=`Rating : ${Math.floor(ele.rating.rate)}`;
    infoDiv.append(ratingDiv);
    div.append(infoDiv);
+   let buyNowBtn = document.createElement("button");
+   buyNowBtn.setAttribute("class","proaddtocartbtn");
+   buyNowBtn.textContent="Buy Now";
+   div.append(buyNowBtn);
    let btn = document.createElement("button");
    btn.setAttribute("id","addBtn");
    btn.addEventListener('click',()=>{

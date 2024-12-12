@@ -43,6 +43,7 @@ function renderProduct(product) {
     addToCartButton.classList.add("addcartbtn2"); 
     addToCartButton.addEventListener("click", () => {
       addToCart(product.id);
+
     });
     productContainer.append(addToCartButton);
     
@@ -61,7 +62,6 @@ function addToCart(id) {
   itemArr.forEach((ele) => {
     if (ele.id == id) {
       item = ele;
-      console.log(item);
     }
   });
 
