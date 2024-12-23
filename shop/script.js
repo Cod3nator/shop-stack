@@ -33,7 +33,23 @@ if(localStorage.getItem('cartArr')){
 else{
   var cartArr=[];
 }
+function pushToDataLayer(dataLayerItems) {
+  if (!window.dataLayer) {
+    console.warn("dataLayer is not defined. Creating it now.");
+    window.dataLayer = [];
+  }
 
+  // Remove existing `view_item_list` events
+  window.dataLayer = window.dataLayer.filter(event => event.event !== "view_item_list");
+
+  // Push the new event
+  window.dataLayer.push({
+    event: "view_item_list",
+    items: dataLayerItems,
+  });
+
+  console.log("Updated Data Layer:", window.dataLayer);
+}
 
 fetch("https://fakestoreapi.com/products")
 .then((resp)=>resp.json())
@@ -44,8 +60,6 @@ fetch("https://fakestoreapi.com/products")
 });
 
 function showItems(Arr){
-  // console.log(Arr)
-  // ga_view_item_list(id=1,category="all",Arr);
   itemsContainer.innerHTML='';
   Arr.forEach(ele => {
    let div = document.createElement("div");
@@ -123,29 +137,33 @@ allBtn.addEventListener('click',()=>{
   electronicsBtn.style.backgroundColor='white';
   showItems(myArr);
 })
+menBtn.addEventListener('click', () => {
+  category = "men's clothing";
+  myArr = itemArr.filter(ele => ele.category === "men's clothing");
 
+  allBtn.style.backgroundColor = 'white';
+  allBtn.style.color = 'black';
+  menBtn.style.color = 'white';
+  menBtn.style.backgroundColor = 'black';
+  womenBtn.style.color = 'black';
+  womenBtn.style.backgroundColor = 'white';
+  jewelleryBtn.style.color = 'black';
+  jewelleryBtn.style.backgroundColor = 'white';
+  electronicsBtn.style.color = 'black';
+  electronicsBtn.style.backgroundColor = 'white';
 
-menBtn.addEventListener('click',()=>{
- category="men's clothing";
-  myArr = itemArr.filter(ele=>{
-    if(ele.category=="men's clothing"){
-      return ele;
-    }
-  })
-  allBtn.style.backgroundColor='white';
-  allBtn.style.color='black';
-  menBtn.style.color='white';
-  menBtn.style.backgroundColor='black';
-  womenBtn.style.color='black';
-  womenBtn.style.backgroundColor='white';
-  jewelleryBtn.style.color='black';
-  jewelleryBtn.style.backgroundColor='white';
-  electronicsBtn.style.color='black';
-  electronicsBtn.style.backgroundColor='white';
+  const dataLayerItems = myArr.map((item) => ({
+    item_brand: item.title,
+    item_name: item.title,
+    item_category: item.category || "",
+    item_category2: "",
+    price: item.price ? item.price.toString() : "0",
+  }));
 
+  triggerViewItemListEvent(); 
+  showItems(myArr); 
+});
 
-  showItems(myArr);
-})
 
 womenBtn.addEventListener('click',()=>{
   category="women's clothing";
@@ -291,6 +309,7 @@ function viewProduct(id) {
   
   const item = itemArr.find((ele) => ele.id == id);
   if (item) {
+    ga_view_item(item);
     localStorage.setItem('selectedProduct', JSON.stringify(item));
     window.location.href = "/product-page/index.html";
   } else {

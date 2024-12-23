@@ -14,6 +14,7 @@ function renderProduct(product) {
     productContainer.append(img);
 
     const title = document.createElement("h1");
+    title.className="name"
     title.textContent = product.title;
     productContainer.append(title);
 
@@ -55,7 +56,7 @@ function renderProduct(product) {
 renderProduct(JSON.parse(localStorage.getItem('selectedProduct')));
 
 function addToCart(id) {
-  const cartKey = `cart_${currentUser.email}`;
+  const cartKey = `cart_user`;
   let item;
   
   const itemArr = JSON.parse(localStorage.getItem('itemArr')) || [];

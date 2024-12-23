@@ -7,29 +7,28 @@ const itemContainer = document.querySelector('.items');
 const listContainer = document.querySelector('.list-container');
 const totalPrice = document.getElementById('total-price');
 var cartItem=[];
-const cartKey = `cart_${currentUser.email}`;
+const cartKey = `cart_user}`;
 
-window.addEventListener('load',function(){
-  function ga_checkout_process(products) {
-    console.log("checkout");
-    gtag("event", "begin_checkout", {
-      currency: "INR",
-      value: products.reduce((acc, product) => acc + product.price, 0),
-      coupon: "no-coupon",
-      items: [
-        products.map((product) => ({
-          item_id: product.id,
-          item_name: product.title,
-          item_brand: product.category,
-          item_category: product.category,
-          price: product.price,
-          quantity: 1,
-        })),
-      ],
-    });
-  }
-  ga_checkout_process(cartItem);
-})
+// window.addEventListener('load',function(){
+//   function ga_checkout_process(products) {
+//     gtag("event", "begin_checkout", {
+//       currency: "INR",
+//       value: products.reduce((acc, product) => acc + product.price, 0),
+//       coupon: "no-coupon",
+//       items: [
+//         products.map((product) => ({
+//           item_id: product.id,
+//           item_name: product.title,
+//           item_brand: product.category,
+//           item_category: product.category,
+//           price: product.price,
+//           quantity: 1,
+//         })),
+//       ],
+//     });
+//   }
+//   ga_checkout_process(cartItem);
+// })
 if(localStorage.getItem(cartKey)){
 
     let myArr =JSON.parse(localStorage.getItem(cartKey));
