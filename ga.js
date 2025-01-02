@@ -1,3 +1,5 @@
+var nv=nv||function(){(window.nv.q=window.nv.q||[]).push(arguments)};nv.l=new Date;var notify_visitors=notify_visitors||function(){var t={initialize:!1,ab_overlay:!1,async:!0,on_load:!1,auth:{bid_e:"B27F1F2E85DEACAC4935AA122D6A65AC",bid:"13544",t:"420"}};return t.data={bid_e:t.auth.bid_e,bid:t.auth.bid,t:t.auth.t,iFrame:window!==window.parent,trafficSource:document.referrer,link_referrer:document.referrer,pageUrl:document.location,path:location.pathname,domain:location.origin,gmOffset:60*(new Date).getTimezoneOffset()-1,screenWidth:screen.width,screenHeight:screen.height,isPwa:window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches?1:0},t.options=function(e){if(t._option={ab_overlay:!1,async:!0,on_load:!1,cookie_domain:null},e&&"object"==typeof e)for(var n in t._option)void 0!==e[n]&&(t[n]=e[n]);else console.log("Not a valid option")},t.tokens=function(e){t.data.tokens=e&&"object"==typeof e?JSON.stringify(e):""},t.ruleData=function(e){t.data.ruleData=e&&"object"==typeof e?JSON.stringify(e):""},t.cookies=function(e){t.data.cookies=e&&(Array.isArray(e)||"all"===e)?e:[]},t.getParams=function(e){var url=window.location.href.toLowerCase(),e=e.replace(/[\[\]]/g,"\\$&").toLowerCase();var t=new RegExp("[?&]"+e+"(=([^&#])|&|#|$)").exec(url);return t&&t[2]?decodeURIComponent(t[2].replace(/\+/g," ")):""},t.init=function(){if("complete"!=document.readyState&&t.on_load){if(window.addEventListener)window.addEventListener("load",t._init);else if(window.attachEvent)return window.attachEvent("onload",t._init)}else t._init()},t._init=function(){if(t.auth&&!t.initialize&&(t.data.storage=t.browserStorage(),t.data.cookieData=t.filterCookies(t.data.cookies),t.cookie_domain&&(t.data.cookieDomain=t.cookie_domain),t.js_callback="nv_json1",!t.data.iFrame&&"noapi"!==t.getParams("nvcheck"))){var n="?";if(t.ab_overlay){var o=document.createElement("style"),i="body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}",a=document.getElementsByTagName("head")[0];o.setAttribute("id","_nv_hm_hidden_element"),o.setAttribute("type","text/css"),o.styleSheet?o.styleSheet.cssText=i:o.appendChild(document.createTextNode(i)),a.appendChild(o),setTimeout(function(){var t=this.document.getElementById("_nv_hm_hidden_element");if(t)try{t.parentNode.removeChild(e)}catch(e){t.remove()}},2e3)}for(var r in t.data)t.data.hasOwnProperty(r)&&(n+=encodeURIComponent(r)+"="+encodeURIComponent(t.data[r])+"&");t.load("https://ext-api.notifyvisitors.com/ext/v1/settings"+n),t.initialize=!0}},t.browserStorage=function(){var e={session:t.storage("sessionStorage"),local:t.storage("localStorage")};return JSON.stringify(e)},t.storage=function(e){var t={};return window[e]&&window[e].length>0&&Object.keys(window[e]).forEach(function(n){-1!==n.indexOf("_nv_")&&(t[n]=window[e][n])}),t},t.filterCookies=function(e){e=e||[];var t=[];if(document&&document.cookie){var n=document.cookie.split(";");"all"===e&&(t=n),Array.isArray(e)&&n&&n.length>0&&(t=n.filter(function(t){var n=t.trim().split("=")[0];return-1!==e.indexOf(n)||0===n.indexOf("nv")}))}return t.join(";")},t.load=function(e){var n=document,o=n.createElement("script");o.type="text/javascript",o.async=t.async,o.src=e,n.body?n.body.appendChild(o):n.head.appendChild(o)},t}();    notify_visitors.options({      ab_overlay: false,    on_load: false   });notify_visitors.init();
+nv('user', "kp_test_1",{"mobile" : "8108692793"});
 const ga_id = "G-V9GTEX5QS1";
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -146,13 +148,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const linkUrl = link.href;
       const linkText = link.innerText.trim();
-      gtag("event", "link_click", {
+      const linkClick = {
         uuid: getCookie("xid"),
         category: "Ecommerce",
         business_category: "Shop stack",
         link_name: linkText,
         link_url: linkUrl,
-      });
+      }
+      gtag("event", "link_click",linkClick);
+      nv("event", "Link click", linkClick);
 
       setTimeout(() => {
         if (
@@ -176,11 +180,13 @@ document.addEventListener("DOMContentLoaded", function () {
     filter.addEventListener("click", (event) => {
       event.preventDefault();
       const filterText = filter.innerText.trim();
-      gtag("event", "filter_applied", {
+      const filtered ={
         category: "Ecommerce",
         business_category: "MeShop",
         filter_value: filterText,
-      });
+      }
+      gtag("event", "filter_applied", filtered);
+      nv("event", "filter_applied", filtered);
     });
   });
 });
@@ -190,15 +196,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchInput.addEventListener("blur", function () {
     const searchedTerm = searchInput.value.trim();
-
+     const searched = {
+      category: "Ecommerce",
+      business_category: "MeShop",
+      uuid: getCookie("xid"),
+      searched_term: searchedTerm,
+    }
     if (searchedTerm) {
-      gtag("event", "Searched", {
-        category: "Ecommerce",
-        business_category: "MeShop",
-        uuid: getCookie("xid"),
-        searched_term: searchedTerm,
-      });
-
+      gtag("event", "Searched", searched);
+      nv("event", "Searched", searched);
       console.log("Search event sent:", searchedTerm);
     }
   });
@@ -208,13 +214,15 @@ document.addEventListener("DOMContentLoaded", function () {
     link.addEventListener("click", function (event) {
       const linkName = this.textContent.trim() || "Unnamed Link";
       const linkUrl = this.href;
-      gtag("event", "Link Clicked", {
+      const linkClicked ={
         category: "Ecommerce",
         business_category: "shop stack",
         uuid: getCookie("xid"),
         link_name: linkName,
         link_url: linkUrl,
-      });
+      };
+      gtag("event", "Link Clicked",linkClicked );
+      nv("event", "Link Clicked",linkClicked );
       console.log("Link Clicked event sent:", linkName, linkUrl);
     });
   });
@@ -225,8 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
     link.addEventListener("click", function () {
       const linkName = this.textContent.trim() || "Unnamed Subcategory";
       const linkUrl = this.href;
-
-      gtag("event", "Subcategory Viewed", {
+       const subcategoryViewed = {
         user_properties: {
           uuid: getCookie("xid"),
         },
@@ -235,8 +242,9 @@ document.addEventListener("DOMContentLoaded", function () {
         uuid: getCookie("xid"),
         link_name: linkName,
         link_url: linkUrl,
-      });
-
+      }
+      gtag("event", "Subcategory Viewed", subcategoryViewed);
+      nv("event", "Subcategory Viewed", subcategoryViewed);
       console.log("Subcategory Viewed event sent:", linkName, linkUrl);
     });
   });
@@ -247,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
     link.addEventListener("click", function () {
       const linkName = this.textContent.trim() || "Unnamed Brand";
       const linkUrl = this.href;
-      gtag("event", "Brand Viewed", {
+      const brandViewed = {
         user_properties: {
           uuid: getCookie("xid"),
         },
@@ -256,8 +264,9 @@ document.addEventListener("DOMContentLoaded", function () {
         uuid: getCookie("xid"),
         link_name: linkName,
         link_url: linkUrl,
-      });
-
+      };
+      gtag("event", "Brand Viewed", brandViewed);
+      nv("event", "Brand Viewed", brandViewed);
       console.log("Brand Viewed event sent:", linkName, linkUrl);
     });
   });
@@ -265,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   const userId = getCookie("xid");
-  gtag("event", "page_view", {
+  const pageView = {
     user_properties: {
       uuid: getCookie("xid"),
     },
@@ -273,7 +282,9 @@ document.addEventListener("DOMContentLoaded", function () {
     business_category: "shop stack",
     uuid: userId,
     user_id: userId,
-  });
+  };
+  gtag("event", "page_view", pageView);
+  nv("event", "page_view", pageView);
 
   console.log("page_view event sent:", userId);
 });
@@ -319,13 +330,14 @@ function triggerViewItemListEvent() {
   }));
 
   const uuid = getCookie("xid") || "unknown_user";
-
-  gtag("event", "view_item_list", {
+  const viewItemListObject = {
     uuid: uuid,
     category: "Ecommerce",
     business_category: "shop stack",
     items: items,
-  });
+  }
+  gtag("event", "view_item_list", viewItemListObject );
+  nv("event", "view_item_list", viewItemListObject );
 }
 
 function ga_view_item(product) {
@@ -339,13 +351,14 @@ function ga_view_item(product) {
   };
   
   const uuid = getCookie("xid") || "unknown_user";
-
-  gtag("event", "view_item", {
+   const viewItem = {
     uuid: uuid,
     category: "Ecommerce",
     business_category: "shop stack",
     items: [item], 
-  });
+  };
+  gtag("event", "view_item", viewItem);
+  nv("event", "view_item", viewItem);
 }
 
 
@@ -368,8 +381,7 @@ function ga_checkout_process(products) {
   console.log("checkout");
   const totalValue = products.reduce((acc, product) => acc + product.price, 0);
   console.log(totalValue);
-
-  gtag("event", "begin_checkout", {
+  const beginCheckout = {
     currency: "INR",
     value: totalValue,
     coupon: "no-coupon",
@@ -381,7 +393,9 @@ function ga_checkout_process(products) {
       price: product.price,
       quantity: 1,
     })),
-  });
+  };
+  gtag("event", "begin_checkout", beginCheckout);
+  nv("event", "begin_checkout", beginCheckout);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -434,12 +448,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fireAddToCartEvent(data_cart){
-  gtag("event", "add_to_cart", {
-      uuid: getCookie('xid'),
-      user_id: getCookie('xid'),
-      category: "Ecommerce",
-      business_category: "Shop stack",
-    items: data_cart,
-  });
-
+  const addToCartObject ={
+    uuid: getCookie('xid'),
+    user_id: getCookie('xid'),
+    category: "Ecommerce",
+    business_category: "Shop stack",
+  items: data_cart,
 }
+  gtag("event", "add_to_cart", addToCartObject );
+  nv("event", "add_to_cart", addToCartObject );
+}
+
